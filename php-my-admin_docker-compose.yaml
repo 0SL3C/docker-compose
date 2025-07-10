@@ -1,0 +1,17 @@
+networks:
+  mariadb-nextcloud_default:
+    external:
+      name: mariadb-nextcloud_default
+
+services:
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 9444:80
+    environment:
+      - PMA_HOST=db
+      #- PMA_USER=
+      #- PMA_PASSWORD=
+    networks:
+      - mariadb-nextcloud_default

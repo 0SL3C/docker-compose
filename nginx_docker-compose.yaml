@@ -1,0 +1,34 @@
+networks:
+  pihole_default:
+    external: true
+  default:
+
+volumes:
+  letsencrypt:
+  data:
+  
+services:
+  app:
+    container_name: nginx
+    image: 'jc21/nginx-proxy-manager:latest'
+    restart: unless-stopped
+    networks:
+      - default
+      - pihole_default
+    ports:
+      # These ports are in format <host-port>:<container-port>
+      - '80:80' # Public HTTP Port
+      - '443:443' # Public HTTPS Port
+      - '81:81' # Admin Web Port
+      # - '21:21' # FTP
+
+    # environment:
+      # Uncomment this if you want to change the location of
+      # the SQLite DB file within the container
+      # DB_SQLITE_FILE: "/data/database.sqlite"
+
+      # DISABLE_IPV6: 'true'
+
+    volumes:
+      - data:/data
+      - letsencrypt:/etc/letsencrypt
